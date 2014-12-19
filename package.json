@@ -1,0 +1,23 @@
+{
+  "name": "flatland",
+  "version": "0.0.1",
+  "description": "Flatlanders going around their two-dimensions.",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jhenriquez/flatland"
+  },
+  "keywords": [
+    "Game",
+    "Snake"
+  ],
+  "author": "Julio Henriquez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jhenriquez/flatland/issues"
+  },
+  "homepage": "https://github.com/jhenriquez/flatland"
+}
