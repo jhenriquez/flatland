@@ -19,5 +19,14 @@
   "bugs": {
     "url": "https://github.com/jhenriquez/flatland/issues"
   },
-  "homepage": "https://github.com/jhenriquez/flatland"
+  "homepage": "https://github.com/jhenriquez/flatland",
+  "dependencies": {
+    "express": "^4.10.6",
+    "swig": "^1.4.2"
+  },
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "grunt": "^0.4.5",
+    "mocha": "^2.0.1"
+  }
 }
