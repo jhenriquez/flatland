@@ -1,0 +1,49 @@
+{
+  "name": "Flatland",
+  "main": "index.js",
+  "version": "0.0.1",
+  "homepage": "https://github.com/jhenriquez/flatland",
+  "authors": [
+    "jhenriquez <julio.m.henriquez@gmail.com>"
+  ],
+  "description": "An entertaining view of Flatland for spacelanders.",
+  "moduleType": [
+    "node"
+  ],
+  "exportsOverride": {
+    "bootstrap": {
+      "scripts/vendors": "dist/js/*.min.js",
+      "css": [
+        "dist/css/*.map",
+        "dist/css/*.min.css"
+      ],
+      "fonts": "dist/fonts/*"
+    },
+    "jquery": {
+      "scripts/vendors": "dist/*.min.js"
+    },
+    "requirejs": {
+      "scripts/vendors": "*.js"
+    },
+    "underscore": {
+      "scripts/vendors": ["*min.js","*.map"]
+    }
+  },
+  "keywords": [
+    "Flatland",
+    "Snake",
+    "Game"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.1",
+    "requirejs": "~2.1.15",
+    "underscore": "~1.7.0"
+  }
+}

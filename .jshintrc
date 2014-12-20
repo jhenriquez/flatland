@@ -1,0 +1,9 @@
+{
+"undef": true,
+"unused": true,
+"curly": true,
+"forin": true,
+"eqeqeq": true,
+"freeze": true,
+"noarg": true
+}
