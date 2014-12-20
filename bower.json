@@ -20,7 +20,7 @@
       "fonts": "dist/fonts/*"
     },
     "jquery": {
-      "scripts/vendors": "dist/*.min.js"
+      "scripts/vendors": ["dist/*.min.js", "dist/*.map"]
     },
     "requirejs": {
       "scripts/vendors": "*.js"
