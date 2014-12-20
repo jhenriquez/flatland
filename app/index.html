@@ -1,6 +1,32 @@
-<html lang="en">	
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" type="text/css" href="css/vendors/bootstrap.min.css" />
+	</head>
 	<body>
-		<span class="changable">Hello, world!</span>
+		<div class="row">
+			<div class="col-md-4 col-md-offset-4">
+				<h1>Welcome, SpaceLander!</h1>
+				<p>
+					You'll find Flatland to be a strange place. Yet, very entertaining.
+					Regardless of your opinions, we like to keep a registry of our visitors,
+					please, state your name before continuing:
+				</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4 col-md-offset-4">
+				<form role="form">
+					<div class="form-group">
+						<label for="spaceLander">Name:</label>
+						<input class="form-control" type="text" for="spaceLander"/>
+					</div>
+				</form>
+			</div>
+			<div class="col-md-4 col-md-offset-4">
+				<button type="submit" class="btn btn-default">Go to Flatland</button>
+			</div>
+		</div>
 		<script data-main="scripts/rjsConfig" src="scripts/vendors/require.js"></script>
 	</body>
 </html>
