@@ -2,10 +2,11 @@
 <html lang="en">
 	<head>
 		<link rel="stylesheet" type="text/css" href="css/vendors/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/game-default.css">
 	</head>
 	<body>
 		<div class="row">
-			<div class="col-md-4 col-md-offset-4">
+			<div class="col-md-8 col-md-offset-2">
 				<h1>Welcome, SpaceLander!</h1>
 				<p>
 					You'll find Flatland to be a strange place. Yet, very entertaining.
@@ -19,14 +20,24 @@
 				<form role="form">
 					<div class="form-group">
 						<label for="spaceLander">Name:</label>
-						<input class="form-control" type="text" for="spaceLander"/>
+						<input class="form-control" type="text" for="spaceLander" />
 					</div>
 				</form>
 			</div>
 			<div class="col-md-4 col-md-offset-4">
-				<button type="submit" class="btn btn-default">Go to Flatland</button>
+				<a href="game.html" class="btn btn-default">Go to Flatland</a>
 			</div>
 		</div>
-		<script data-main="scripts/rjsConfig" src="scripts/vendors/require.js"></script>
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<h1>Notable Visitors</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<div id="score-board"></div>
+			</div>
+		</div>
+		<script data-main="scripts/indexConfig" src="scripts/vendors/require.js"></script>
 	</body>
 </html>
