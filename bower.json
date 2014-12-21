@@ -20,13 +20,22 @@
       "fonts/vendors": "dist/fonts/*"
     },
     "jquery": {
-      "scripts/vendors": ["dist/*.min.js", "dist/*.map"]
+      "scripts/vendors": [
+        "dist/*.min.js",
+        "dist/*.map"
+      ]
     },
     "requirejs": {
       "scripts/vendors": "*.js"
     },
     "underscore": {
-      "scripts/vendors": ["*min.js","*.map"]
+      "scripts/vendors": [
+        "*min.js",
+        "*.map"
+      ]
+    },
+    "modernizr": {
+      "scripts/vendors": "mod*.js"
     }
   },
   "keywords": [
@@ -44,6 +53,7 @@
   "dependencies": {
     "bootstrap": "~3.3.1",
     "requirejs": "~2.1.15",
-    "underscore": "~1.7.0"
+    "underscore": "~1.7.0",
+    "modernizr": "~2.8.3"
   }
 }
