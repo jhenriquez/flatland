@@ -1,5 +1,12 @@
 define(['game/GameStorage'], function (storage) {
-	return {
-		text:"I'm the GameMaker!"
-	};
+	function GameMaker(storage) {
+		if (!storage || storage.constructor.name != 'GameStorage') {
+			throw new Error('The GameMaker requires a GameStorage object.');
+		}
+	}
+
+	GameMaker.prototype = Object.create(GameMaker.prototype);
+	GameMaker.constructor = GameMaker;
+
+	return new GameMaker(storage);
 });

@@ -10,7 +10,7 @@ define(['vendors/modernizr'],function () {
 
 		this.currentPlayer = function () {
 
-		};
+		};	
 
 		this.saveHighScore = function (player, score) {
 
