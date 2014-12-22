@@ -1,5 +1,4 @@
 module.exports = function (g) {
-  var files = ['Gruntfile.js', '.jshintrc', 'index.js', 'lib/**/**.js', 'routes/**/**.js', 'specs/**/**.js', 'models/**/**.js'];
   g.initConfig({
     pkg: g.file.readJSON('package.json'),
     bower: {
@@ -18,13 +17,19 @@ module.exports = function (g) {
       }
     },
     jshint: {
-      files: files
+      files: ['app/scripts/game/**/*.js']
+    },
+    mocha: {
+      all: {
+        src: ['specs/**/*.html']
+      }
     }
   });
 
   g.loadNpmTasks('grunt-contrib-jshint');
   g.loadNpmTasks('grunt-bower-task');
+  g.loadNpmTasks('grunt-mocha');
 
-  g.registerTask('test', ['jshint']);
+  g.registerTask('test', ['jshint', 'mocha:all']);
   g.registerTask('default', ['jshint']);
 };
