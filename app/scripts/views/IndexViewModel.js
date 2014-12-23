@@ -1,5 +1,7 @@
 requirejs(['../rjsConfig',], function () {
-	requirejs(['game/GameStorage'], function (storage) {
+	requirejs([
+		'_',
+		'game/GameStorage'], function (storage) {
 
 		function onSubmit (e) {
 			if (!$('input[for="name"]').val()) {
