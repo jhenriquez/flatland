@@ -7,6 +7,6 @@ requirejs.config({
 	}
 });
 
-requirejs(['$'], function () {
+requirejs(['_','$'], function () {
 	requirejs(['bootstrap']);
 });
