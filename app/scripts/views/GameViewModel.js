@@ -1,20 +1,28 @@
 requirejs(['../rjsConfig',], function () {
-	requirejs(['_', 'game/GameMaker'], function (gameMaster) {
+	requirejs(['_', 'game/GameMaker'], function (_, gameMaster) {
 		var canvas = document.getElementById('canvas');
 
-		function InitializeCanvasContainer() {
+		function initializeCanvasContainer() {
 			$('#canvas-container').height((70 / 100) * $(window).height());
 		}
 
-		function InitializeCanvas(e) {
+		function initializeCanvas(e) {
 			canvas.width =  $('#canvas-container').width();
 			canvas.height = $('#canvas-container').height();
 		}
 
-		$(window).resize(InitializeCanvasContainer);
-		$(window).resize(InitializeCanvas);
+		function updateStats() {
+			var playe = gameMaster.getCurrentPlayer();
+			var score = gameMaster.getScore();
+			$('#player').html(gameMaster.getCurrentPlayer());
+			$('#score').html(gameMaster.getScore());
+		}
 
-		InitializeCanvasContainer();
-		InitializeCanvas();
+		$(window).resize(initializeCanvasContainer);
+		$(window).resize(initializeCanvas);
+
+		initializeCanvasContainer();
+		initializeCanvas();
+		updateStats();
 	});
 });

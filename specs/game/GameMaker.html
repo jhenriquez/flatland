@@ -18,9 +18,10 @@
           baseUrl: '../../app/scripts'
         });
 
-        requirejs(['game/GameMaker'], function (maker) {
+        requirejs(['game/GameMaker','game/GameStorage'], function (maker, storage) {
           window.GameMaker = maker;
-
+          window.GameStorage = storage;
+          
           if (window.mochaPhantomJS) { mochaPhantomJS.run(); }
           else { mocha.run(); }
         });
