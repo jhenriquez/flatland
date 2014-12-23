@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../libs/mocha.css" />
+    <script src="../libs/mocha.js"></script>
+    <script src="../libs/chai.js"></script>
+    <script src="../libs/require.js"></script>
+  </head>
+  <body>
+    <canvas id="test-canvas"></canvas>
+    <div id="fake-canvas"></div>
+    <div id="mocha"></div>
+    <script>
+      mocha.ui('bdd');
+      mocha.reporter('html');
+      chai.should();
+
+      requirejs(['./Game-specs'], function () {
+        requirejs.config({
+          baseUrl: '../../app/scripts',
+            paths: {
+              '_': 'vendors/underscore-min'
+            }
+        });
+
+        requirejs(['_'], function () {
+          requirejs(['game/GameMaker','game/Game'], function (maker, storage, Game) {
+            window.GameMaker = maker;
+            window.Game = Game;
+            
+            if (window.mochaPhantomJS) { mochaPhantomJS.run(); }
+            else { mocha.run(); }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

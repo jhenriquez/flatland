@@ -5,26 +5,31 @@ define([
 	function Game(opts) {
 		var internalState = {};
 
-		var gameDefaults = {
-			pause: false,
-			score: 0,
-			settings: {
-				speed: 10,
-			}
-		};
-
-		var snake = {
-			body: [],
-			direction: 0
-		};
-
 		var step = function () {
 		};
 
-		this.setDirection = function (direction) {
+		this.getCanvas = function () {
+			return internalState.canvas;
 		};
 
-		this.changeSpeed = function (speed) {
+		this.getDirection = function () {
+			return internalState.snake.direction;
+		};
+
+		this.setDirection = function (direction) {
+			internalState.snake.direction = direction;
+		};
+
+		this.getSpeed = function (speed) {
+			return internalState.speed;
+		};
+
+		this.pauseToggle = function () {
+			internalState.pause = !internalState.pause;
+		};
+
+		this.isPaused = function () {
+			return internalState.pause;
 		};
 
 		this.environmentChanged = function (newEnvironment) {
@@ -33,10 +38,18 @@ define([
 		};
 
 		(function () {
-			var tmp = _.extend(gameDefaults,opts);
-			internalState.canvas = tmp.canvas;
-			internalState.canvas.width = tmp.width;
-			internalState.canvas.height = tmp.height;
+			internalState = _.extend({
+				pause: false,
+				score: 0,
+				speed: 10,
+				snake: {
+					body: [],
+					direction: 0
+				}
+			});
+			internalState.canvas = opts.canvas;
+			internalState.canvas.width = opts.width || 0;
+			internalState.canvas.height = opts.height || 0;
 		})();
 	}
 
