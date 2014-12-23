@@ -1,6 +1,4 @@
-define([
-	'game/GameStorage',
-	'game/Block'], function (storage, Block) {
+define(['game/GameStorage'], function (storage) {
 
 	function Game(opts) {
 		var internalState = {};
