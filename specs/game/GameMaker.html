@@ -1,13 +1,13 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="libs/mocha.css" />
+    <link rel="stylesheet" href="../libs/mocha.css" />
   </head>
   <body>
     <div id="mocha"></div>
-    <script src="libs/mocha.js"></script>
-    <script src="libs/chai.js"></script>
-    <script src="libs/require.js"></script>
+    <script src="../libs/mocha.js"></script>
+    <script src="../libs/chai.js"></script>
+    <script src="../libs/require.js"></script>
     <script>
       mocha.ui('bdd');
       mocha.reporter('html');
@@ -15,7 +15,7 @@
 
       requirejs(['./GameMaker-specs'], function () {
         requirejs.config({
-          baseUrl: '../app/scripts'
+          baseUrl: '../../app/scripts'
         });
 
         requirejs(['game/GameMaker'], function (maker) {

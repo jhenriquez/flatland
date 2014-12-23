@@ -5,9 +5,9 @@
   </head>
   <body>
     <div id="mocha"></div>
-    <script src="libs/mocha.js"></script>
-    <script src="libs/chai.js"></script>
-    <script src="libs/require.js"></script>
+    <script src="../libs/mocha.js"></script>
+    <script src="../libs/chai.js"></script>
+    <script src="../libs/require.js"></script>
     <script>
       mocha.ui('bdd');
       mocha.reporter('html');
@@ -15,7 +15,7 @@
 
       requirejs(['./GameStorage-specs'], function () {
         requirejs.config({
-          baseUrl: '../app/scripts'
+          baseUrl: '../../app/scripts'
         });
 
         requirejs(['game/GameStorage'], function (storage) {

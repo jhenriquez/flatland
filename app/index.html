@@ -18,20 +18,18 @@
 		<div class="row">
 			<div class="col-md-4 col-md-offset-4">
 				<form role="form">
-					<div class="form-group">
-						<label for="spaceLander">Name:</label>
-						<input class="form-control" type="text" for="spaceLander" />
+					<div id="name-form-group" class="form-group">
+						<label for="name">Name:</label>
+						<input class="form-control" type="text" for="name" />
 					</div>
+					<a href="/game" class="btn btn-default">Go to Flatland</a>
 				</form>
-			</div>
-			<div class="col-md-4 col-md-offset-4">
-				<a href="/game" class="btn btn-default">Go to Flatland</a>
 			</div>
 		</div>
 		<div class="row">
 			<div id="score-board" class="col-md-8 col-md-offset-2">
 			</div>
 		</div>
-		<script data-main="scripts/indexConfig" src="scripts/vendors/require.js"></script>
+		<script data-main="scripts/views/IndexViewModel" src="scripts/vendors/require.js"></script>
 	</body>
 </html>
