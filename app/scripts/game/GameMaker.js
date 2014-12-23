@@ -1,7 +1,10 @@
-define(['game/GameStorage'], function (storage) {
+define(['game/GameStorage', 'game/Game'], function (storage, Game) {
 	function GameMaker(storage) {
-		if (!storage || storage.constructor.name != 'GameStorage') {
-			throw new Error('The GameMaker requires a GameStorage object.');
+
+		function validateCanvasElement (canvas) {
+			if (!canvas || canvas.tagName !== 'CANVAS') {
+				throw new Error('Invalid canvas element provided.');
+			}
 		}
 
 		this.getCurrentPlayer = function () {
@@ -10,6 +13,19 @@ define(['game/GameStorage'], function (storage) {
 
 		this.getScore = function () {
 			return storage.getScore();
+		};
+
+		this.createGame = function (settings) {
+			settings = settings || {};
+			validateCanvasElement(settings.canvas);
+
+			var game = {
+				canvas: settings.canvas,
+				width: settings.width || 0,
+				height: settings.height || 0
+			};
+
+			return new Game(game);
 		};
 	}
 

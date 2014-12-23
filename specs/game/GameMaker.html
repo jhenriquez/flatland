@@ -2,12 +2,14 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="../libs/mocha.css" />
-  </head>
-  <body>
-    <div id="mocha"></div>
     <script src="../libs/mocha.js"></script>
     <script src="../libs/chai.js"></script>
     <script src="../libs/require.js"></script>
+  </head>
+  <body>
+    <canvas id="test-canvas"></canvas>
+    <div id="fake-canvas"></div>
+    <div id="mocha"></div>
     <script>
       mocha.ui('bdd');
       mocha.reporter('html');
@@ -15,16 +17,25 @@
 
       requirejs(['./GameMaker-specs'], function () {
         requirejs.config({
-          baseUrl: '../../app/scripts'
+          baseUrl: '../../app/scripts',
+            paths: {
+              '_': 'vendors/underscore-min',
+              '$': 'vendors/jquery.min',
+              'bootstrap': 'vendors/bootstrap.min'
+            }
         });
 
-        requirejs(['game/GameMaker','game/GameStorage'], function (maker, storage) {
-          window.GameMaker = maker;
-          window.GameStorage = storage;
-          
-          if (window.mochaPhantomJS) { mochaPhantomJS.run(); }
-          else { mocha.run(); }
+        requirejs(['_'], function () {
+          requirejs(['game/GameMaker','game/GameStorage', 'game/Game'], function (maker, storage, Game) {
+            window.GameMaker = maker;
+            window.GameStorage = storage;
+            window.Game = Game;
+            
+            if (window.mochaPhantomJS) { mochaPhantomJS.run(); }
+            else { mocha.run(); }
+          });
         });
+
       });
     </script>
   </body>

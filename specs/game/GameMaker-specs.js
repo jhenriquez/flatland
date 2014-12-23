@@ -26,4 +26,25 @@ describe('GameMaker', function () {
 			GameMaker.getScore().should.eql(1);
 		});
 	});
+
+	describe('createGame', function () {
+		var settings = {};
+
+		beforeEach(function () {
+			settings.canvas = document.getElementById('test-canvas')
+		});
+
+		it('expects a canvas on the settings object.', function () {
+			(function () { GameMaker.createGame({}); }).should.throw(Error, /canvas/);
+		});
+
+		it('it complains if the provided element is not a canvas.', function () {
+			settings.canvas = document.getElementById('fake-canvas');
+			 (function () { GameMaker.createGame(settings); }).should.throw(Error, /canvas/);
+		});
+
+		it('returns a Game object', function () {
+			GameMaker.createGame(settings).should.be.instanceof(Game);
+		});
+	});
 });

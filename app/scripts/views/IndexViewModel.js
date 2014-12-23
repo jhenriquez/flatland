@@ -12,7 +12,5 @@ requirejs(['../rjsConfig',], function () {
 
 		$('form').submit(onSubmit);
 		$('.btn').click(onSubmit);
-
-		return window.IndexViewModel;
 	});
 });
