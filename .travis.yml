@@ -1,5 +1,11 @@
 language: node_js
 node_js:
-  - "0.10"
+- '0.10'
 before_install: npm install -g grunt-cli
-
+deploy:
+  provider: heroku
+  api_key:
+    secure: OVaAeUvOT8gnsbNoDBPnxzDYM70rf4WOZk6WSrZQSo/aTw/2XXceU1p9X+pbQbwUDIQYsXoCUlJo2hfsrvMdQ4xS5yJoWNOFn7wj8Wy7ycI70GKP4UCBq8JjtqDUbrzZJvhNhv/Dy3ORwTIeoV5gkUTx4ep57zmaRvuKd30hCDE=
+  app: flatland
+  on:
+    repo: jhenriquez/flatland
