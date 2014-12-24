@@ -20,7 +20,7 @@ define(['game/GameStorage'], function (storage) {
 				if (!internalState.pause) {
 					requestAnimationFrame(animate);
 				}
-			}, 800)
+			}, 800);
 		};
 
 		this.getCanvas = function () {
