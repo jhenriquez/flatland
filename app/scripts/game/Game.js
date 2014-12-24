@@ -2,8 +2,25 @@ define(['game/GameStorage'], function (storage) {
 
 	function Game(opts) {
 		var internalState = {};
+		var x = 0, y = 0;
+		var context;
 
-		var step = function () {
+		var animate = function () {
+			context.clearRect(x-15,y,15,15);
+
+			if (x >= internalState.canvas.width) {
+				x = 0;
+			}
+
+			context.fillRect(x,y,15,15);
+
+			x += 15;
+
+			setTimeout(function () { 
+				if (!internalState.pause) {
+					requestAnimationFrame(animate);
+				}
+			}, 800)
 		};
 
 		this.getCanvas = function () {
@@ -35,6 +52,10 @@ define(['game/GameStorage'], function (storage) {
 			internalState.canvas.height = newEnvironment.height;
 		};
 
+		this.start = function () {
+			requestAnimationFrame(animate);
+		};
+
 		(function () {
 			internalState = _.extend({
 				pause: false,
@@ -48,6 +69,7 @@ define(['game/GameStorage'], function (storage) {
 			internalState.canvas = opts.canvas;
 			internalState.canvas.width = opts.width || 0;
 			internalState.canvas.height = opts.height || 0;
+			context = internalState.canvas.getContext('2d');
 		})();
 	}
 

@@ -25,6 +25,8 @@ requirejs(['../rjsConfig',], function () {
 			canvas: document.getElementById('canvas'),
 			width: $('#canvas-container').width(),
 			height: $('#canvas-container').height()
-		});;
+		});
+
+		game.start();
 	});
 });
