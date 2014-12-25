@@ -18,6 +18,13 @@ requirejs(['../rjsConfig',], function () {
 			});
 		});
 
+		$(window).keydown(function (e) {
+			if (/3[7-9]|40/.test(e.which)) {
+				e.preventDefault();
+				game.setDirection(e.which-37);
+			}
+		});
+
 		initializeCanvasContainer();
 		updateStats();
 

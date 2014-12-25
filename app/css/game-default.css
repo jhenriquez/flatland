@@ -10,3 +10,7 @@ ul {
 li span {
 	font-weight: normal;
 }
+
+canvas {
+	border: 1px dotted black;
+}
