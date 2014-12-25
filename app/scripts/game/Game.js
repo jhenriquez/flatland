@@ -24,20 +24,16 @@ define(['game/GameStorage'], function (storage) {
 				pBlock.clear();
 			}
 
-			if ((block.x || 0)  >= internalState.canvas.width) {
-				block = {
-					x: 0,
-					y: block.y,
-					size: block.size
-				};
+			if (block.x  >= internalState.canvas.width) {
+				block.x = 0;
+			} else if (block.x < 0) {
+				block.x = internalState.canvas.width;
 			}
 
-			if ((block.y || 0)  >= internalState.canvas.height) {
-				block = {
-					x: block.x,
-					y: 0,
-					size: block.size
-				};
+			if (block.y  >= internalState.canvas.height) {
+				block.y = 0;
+			} else if (block.y < 0) {
+				internal.snake.direction = 1;
 			}
 
 			block.draw();
@@ -62,7 +58,7 @@ define(['game/GameStorage'], function (storage) {
 				if (!internalState.pause) {
 					requestAnimationFrame(animate);
 				}
-			}, 800);
+			}, 500);
 		};
 
 		this.getCanvas = function () {
