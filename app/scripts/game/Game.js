@@ -4,15 +4,14 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 			pause: false,
 			score: 0,
 			metrics: {
-				size: 15,
+				size: 10,
 				speed: 10
 			},
+			food: [],
 			snake: {
 				body: [],
 				direction: 0,
-				getHead: function () {
-					return this.body[this.body.length-1];
-				}
+				directionCache: 0
 			}
 		};
 
@@ -29,46 +28,82 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 		}
 
 		function createHead () {
-			var currentHead = state.snake.getHead();
-			var newHead = new Block(currentHead.x, currentHead.y, currentHead.size, currentHead.context);
+			var h = _.last(state.snake.body);
+			var newHead = new Block(h.x, h.y, h.size, h.context);
 
 			switch(state.snake.direction){
-				case 0: // left
+				case 0: 
 					newHead.x -= state.metrics.size;
 					break;
-				case 1: // up
+				case 1: 
 					newHead.y -= state.metrics.size;
 					break;
-				case 2: // right
+				case 2: 
 					newHead.x += state.metrics.size;
 					break;
-				case 3: // down
+				case 3: 
 					newHead.y += state.metrics.size;
 					break;
 			}
 			return newHead;
 		}
 
+		function within (n, s, e) {
+			return n >= s && n <= e;
+		}
+
 		function collides(h) {
-			var body = state.snake.body.slice(0,state.snake.body.length - 2);
-			return body.reduce(function (r, v) {
-				if (v.x === h.x && v.y === h.y) {
-					r.push(v);
-				}
-				return r;
-			}, []).length !== 0 || (h.x < 0 || h.x > state.canvas.width) || (h.y < 0 || h.y > state.canvas.height);
+			return _.where(state.snake.body, {x: h.x, y: h.y}).length > 1 || 
+					(h.x < 0 || h.x > state.canvas.width) || (h.y < 0 || h.y > state.canvas.height);
+		}
+
+		function checkfood(h) {
+			return _.filter(state.food, function (f) {
+				return within(f.x, h.x, h.x + state.metrics.size);
+			});
+		}
+
+		function generateRandomPieceOfFood() {
+			var x;
+			var y;
+			var all = _.union(state.food, state.snake.body);
+			do {
+				x = _.random(state.canvas.width);
+				y = _.random(state.canvas.height);
+				x += x % state.metrics.size;
+				y += y % state.metrics.size;
+			} while(_.where(all, {x: x, y: y}).length > 0);
+
+			return new Block(x, y, state.metrics.size, context);
 		}
 
 		function animate () {
 			var head = createHead();
 			state.snake.body.push(head);
 			head.draw();
-			
+			state.snake.directionCache = state.snake.direction;
+
 			if (collides(head)) {
-				alert('collision!');
+				state.pause = true;
 			}
 
 			state.snake.body.shift().clear();
+
+			/*
+
+			var foods = checkfood(head);
+
+			if (foods.length > 0) {
+				_.each(foods, function (f) {
+					state.food = _.without(state.food, f);
+					state.food.push(generateRandomPieceOfFood());
+					_.last(state.food).draw();
+				});
+			} else {
+				state.snake.body.shift().clear();
+			}
+
+			*/
 
 			setTimeout(function () { 
 				if (state.pause) {
@@ -89,7 +124,7 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 
 		this.setDirection = function (direction) {
 			var opposedDirection = { 0:2, 1:3, 2:0, 3:1 };
-			if (/[0123]/.test(direction) && direction != opposedDirection[state.snake.direction]) {
+			if (/[0123]/.test(direction) && direction != opposedDirection[state.snake.directionCache]) {
 				state.snake.direction = direction;
 			}
 		};

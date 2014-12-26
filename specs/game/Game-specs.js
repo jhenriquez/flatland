@@ -32,16 +32,6 @@ describe('Game', function () {
 			game.setDirection(5);
 			game.getDirection().should.eql(0);
 		});
- 
-		it('should ignore directions that are opposite to the current one.', function () {
-			game.getDirection().should.eql(0);
-			game.setDirection(2);
-			game.getDirection().should.eql(0);
-			game.setDirection(1);
-			game.getDirection().should.eql(1);
-			game.setDirection(3);
-			game.getDirection().should.eql(1);
-		});
 
 		it('should return the internally set direction when getDirection is called.', function () {
 			game.getDirection().should.eql(0);
