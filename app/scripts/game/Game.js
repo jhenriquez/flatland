@@ -1,8 +1,27 @@
 define(['game/GameStorage', 'game/Block'], function (storage, Block) {
-
 	function Game(opts) {
-		var state = {};
-		var context;
+		var state = {
+			pause: false,
+			score: 0,
+			metrics: {
+				size: 15,
+				speed: 10
+			},
+			snake: {
+				body: [],
+				direction: 0,
+				getHead: function () {
+					return this.body[this.body.length-1];
+				}
+			}
+		};
+
+		state.canvas = opts.canvas;
+		state.canvas.width = opts.width || 0;
+		state.canvas.height = opts.height || 0;
+
+		var context = state.canvas.getContext('2d');
+
 
 		var createHead = function () {
 			var currentHead = state.snake.getHead();
@@ -37,7 +56,7 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 				if (!state.pause) {
 					requestAnimationFrame(animate);
 				} // else Handle Pause.
-			}, 500);
+			}, state.metrics.speed * 30);
 		};
 
 		this.getCanvas = function () {
@@ -49,7 +68,8 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 		};
 
 		this.setDirection = function (direction) {
-			if (direction >= 0 && direction <= 3) {
+			var opposedDirection = { 0:2, 1:3, 2:0, 3:1 };
+			if (direction >= 0 && direction <= 3 && direction != opposedDirection[state.snake.direction]) {
 				state.snake.direction = direction;
 			}
 		};
@@ -72,39 +92,19 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 		};
 
 		this.start = function () {
-			this.setDirection(2);
+			state.snake.direction = 2;
 
-			for(var i = 0; i < 3; i++) {
-				var block = state.snake.body.length === 0 ? 
-						new Block(0,0,state.metrics.size,context) :
-						new Block(state.snake.body[0].x-state.metrics.size,state.snake.body[0].y-state.metrics.size,state.metrics.size,context);
-				state.snake.body.unshift(block);
-			}
+			state.snake.body = Array.apply(null, new Array(3)).map(function () {
+				return new Block(0,0,state.metrics.size, context);
+			}).map(function (v, i) {
+				v.x = v.x - state.metrics.size;
+				return v;
+			});
+
+			state.snake.body.reverse();
 
 			requestAnimationFrame(animate);
 		};
-
-		(function () {
-			state = {
-				pause: false,
-				score: 0,
-				metrics: {
-					size: 15,
-					speed: 10
-				},
-				snake: {
-					body: [],
-					direction: 0,
-					getHead: function () {
-						return this.body[this.body.length-1];
-					}
-				}
-			};
-			state.canvas = opts.canvas;
-			state.canvas.width = opts.width || 0;
-			state.canvas.height = opts.height || 0;
-			context = state.canvas.getContext('2d');
-		})();
 	}
 
 	Game.prototype = Object.create(Game.prototype);
