@@ -17,13 +17,18 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 		};
 
 		state.canvas = opts.canvas;
-		state.canvas.width = opts.width || 0;
-		state.canvas.height = opts.height || 0;
+		state.canvas.width = adjustedSize(opts.width);
+		state.canvas.height = adjustedSize(opts.height);
 
 		var context = state.canvas.getContext('2d');
 
+		function adjustedSize (messure) {
+			messure = messure || 0;
+			messure -= messure % state.metrics.size;
+			return messure;
+		}
 
-		var createHead = function () {
+		function createHead () {
 			var currentHead = state.snake.getHead();
 			var newHead = new Block(currentHead.x, currentHead.y, currentHead.size, currentHead.context);
 
@@ -42,9 +47,9 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 					break;
 			}
 			return newHead;
-		};
+		}
 
-		var animate = function () {
+		function animate () {
 			state.snake.body.push(createHead());
 			state.snake.getHead().draw();
 			
@@ -53,11 +58,13 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 			state.snake.body.shift().clear();
 
 			setTimeout(function () { 
-				if (!state.pause) {
+				if (state.pause) {
+					// Handle Pause
+				} else {
 					requestAnimationFrame(animate);
-				} // else Handle Pause.
+				}
 			}, state.metrics.speed * 30);
-		};
+		}
 
 		this.getCanvas = function () {
 			return state.canvas;
@@ -69,7 +76,7 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 
 		this.setDirection = function (direction) {
 			var opposedDirection = { 0:2, 1:3, 2:0, 3:1 };
-			if (direction >= 0 && direction <= 3 && direction != opposedDirection[state.snake.direction]) {
+			if (/[0123]/.test(direction) && direction != opposedDirection[state.snake.direction]) {
 				state.snake.direction = direction;
 			}
 		};
@@ -87,8 +94,8 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 		};
 
 		this.environmentChanged = function (newEnvironment) {
-			state.canvas.width = newEnvironment.width;
-			state.canvas.height = newEnvironment.height;
+			state.canvas.width = adjustedSize(newEnvironment.width);
+			state.canvas.height = adjustedSize(newEnvironment.height);
 		};
 
 		this.start = function () {
