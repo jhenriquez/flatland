@@ -49,11 +49,24 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 			return newHead;
 		}
 
+		function collides(h) {
+			var body = state.snake.body.slice(0,state.snake.body.length - 2);
+			return body.reduce(function (r, v) {
+				if (v.x === h.x && v.y === h.y) {
+					r.push(v);
+				}
+				return r;
+			}, []).length !== 0 || (h.x < 0 || h.x > state.canvas.width) || (h.y < 0 || h.y > state.canvas.height);
+		}
+
 		function animate () {
-			state.snake.body.push(createHead());
-			state.snake.getHead().draw();
+			var head = createHead();
+			state.snake.body.push(head);
+			head.draw();
 			
-			// Handle Collisions or Food
+			if (collides(head)) {
+				alert('collision!');
+			}
 
 			state.snake.body.shift().clear();
 
