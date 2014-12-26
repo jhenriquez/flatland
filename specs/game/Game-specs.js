@@ -27,6 +27,12 @@ describe('Game', function () {
 			game.getDirection().should.eql(1);
 		});
 
+		it('will ignore any direction that is not between 0-3', function () {
+			game.getDirection().should.eql(0);
+			game.setDirection(5);
+			game.getDirection().should.eql(0);
+		});
+
 		it('should return the internally set direction when getDirection is called.', function () {
 			game.getDirection().should.eql(0);
 		});

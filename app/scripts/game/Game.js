@@ -1,115 +1,109 @@
-define(['game/GameStorage'], function (storage) {
+define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 
 	function Game(opts) {
-		var internalState = {};
-		var x = 0, y = 0;
+		var state = {};
 		var context;
-		var pBlock;
-		var block = {
-				x: 0,
-				y: 0,
-				size: 15,
 
-				clear: function () {
-					context.clearRect(this.x,this.y,this.size,this.size);
-				},
+		var createHead = function () {
+			var currentHead = state.snake.getHead();
+			var newHead = new Block(currentHead.x, currentHead.y, currentHead.size, currentHead.context);
 
-				draw: function () {
-					context.fillRect(this.x,this.y,this.size,this.size);
-				}
-			};
-
-		var animate = function () {
-			if(pBlock) {
-				pBlock.clear();
-			}
-
-			if (block.x  >= internalState.canvas.width) {
-				block.x = 0;
-			} else if (block.x < 0) {
-				block.x = internalState.canvas.width;
-			}
-
-			if (block.y  >= internalState.canvas.height) {
-				block.y = 0;
-			} else if (block.y < 0) {
-				internal.snake.direction = 1;
-			}
-
-			block.draw();
-			pBlock = _.clone(block);
-
-			switch(internalState.snake.direction){
+			switch(state.snake.direction){
 				case 0: // left
-					block.x -= block.size;
+					newHead.x -= state.metrics.size;
 					break;
 				case 1: // up
-					block.y -= block.size;
+					newHead.y -= state.metrics.size;
 					break;
 				case 2: // right
-					block.x += block.size;
+					newHead.x += state.metrics.size;
 					break;
 				case 3: // down
-					block.y += block.size;
+					newHead.y += state.metrics.size;
 					break;
 			}
+			return newHead;
+		};
+
+		var animate = function () {
+			state.snake.body.push(createHead());
+			state.snake.getHead().draw();
+			
+			// Handle Collisions or Food
+
+			state.snake.body.shift().clear();
 
 			setTimeout(function () { 
-				if (!internalState.pause) {
+				if (!state.pause) {
 					requestAnimationFrame(animate);
-				}
+				} // else Handle Pause.
 			}, 500);
 		};
 
 		this.getCanvas = function () {
-			return internalState.canvas;
+			return state.canvas;
 		};
 
 		this.getDirection = function () {
-			return internalState.snake.direction;
+			return state.snake.direction;
 		};
 
 		this.setDirection = function (direction) {
-			console.log(direction);
-			internalState.snake.direction = direction;
+			if (direction >= 0 && direction <= 3) {
+				state.snake.direction = direction;
+			}
 		};
 
 		this.getSpeed = function (speed) {
-			return internalState.speed;
+			return state.metrics.speed;
 		};
 
 		this.pauseToggle = function () {
-			internalState.pause = !internalState.pause;
+			state.pause = !state.pause;
 		};
 
 		this.isPaused = function () {
-			return internalState.pause;
+			return state.pause;
 		};
 
 		this.environmentChanged = function (newEnvironment) {
-			internalState.canvas.width = newEnvironment.width;
-			internalState.canvas.height = newEnvironment.height;
+			state.canvas.width = newEnvironment.width;
+			state.canvas.height = newEnvironment.height;
 		};
 
 		this.start = function () {
 			this.setDirection(2);
+
+			for(var i = 0; i < 3; i++) {
+				var block = state.snake.body.length === 0 ? 
+						new Block(0,0,state.metrics.size,context) :
+						new Block(state.snake.body[0].x-state.metrics.size,state.snake.body[0].y-state.metrics.size,state.metrics.size,context);
+				state.snake.body.unshift(block);
+			}
+
 			requestAnimationFrame(animate);
 		};
 
 		(function () {
-			internalState = _.extend({
+			state = {
 				pause: false,
 				score: 0,
-				speed: 10,
+				metrics: {
+					size: 15,
+					speed: 10
+				},
 				snake: {
 					body: [],
-					direction: 0
+					direction: 0,
+					getHead: function () {
+						return this.body[this.body.length-1];
+					}
 				}
-			});
-			internalState.canvas = opts.canvas;
-			internalState.canvas.width = opts.width || 0;
-			internalState.canvas.height = opts.height || 0;
-			context = internalState.canvas.getContext('2d');
+			};
+			state.canvas = opts.canvas;
+			state.canvas.width = opts.width || 0;
+			state.canvas.height = opts.height || 0;
+			context = state.canvas.getContext('2d');
 		})();
 	}
 
