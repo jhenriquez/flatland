@@ -1,25 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<link rel="stylesheet" type="text/css" href="css/vendors/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="css/game-default.css">
 	</head>
 	<body>
+
+		<div class="modal fade" role="dialog" aria-labelledby="GameOver" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div class="row">
 			<div id="canvas-container" class="col-md-10 col-md-offset-1">
 				<canvas id="canvas"></canvas>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-4">
-				<ul>
-					<li>
-						Player: <span id="player">Someone</span>
-					</li>
-					<li>
-						Score: <span id="score">0</span>
-					</li>
-				</ul>
+			<div class="col-md-4 col-md-offset-2">
+				Player: <span id="player">Someone</span>
+			</div>
+			<div class="col-md-4 col-md-offset-2">
+				Score: <span id="score">0</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+				<i class="glyphicon glyphicon-arrow-left"></i>
+			</div>
+			<div class="col-md-3">
+				<i class="glyphicon glyphicon-arrow-right"></i>
+			</div>
+			<div class="col-md-3">
+				<i class="glyphicon glyphicon-arrow-up"></i>
+			</div>
+			<div class="col-md-3">
+				<i class="glyphicon glyphicon-arrow-down"></i>
 			</div>
 		</div>
 		<script data-main="scripts/views/GameViewModel" src="scripts/vendors/require.js"></script>

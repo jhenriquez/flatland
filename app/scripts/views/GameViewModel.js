@@ -31,6 +31,17 @@ requirejs(['../rjsConfig',], function () {
 			height: $('#canvas-container').height()
 		});
 
+		game.onGameOver(function () {
+			$('.modal').modal({
+				backdrop: 'static',
+				keyboard: false
+			});
+		});
+
+		game.onScore(function (score) {
+			$('#score').html(score);
+		});
+
 		game.start();
 	});
 });

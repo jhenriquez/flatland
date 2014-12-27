@@ -40,7 +40,9 @@ define(['vendors/modernizr'],function () {
 					});
 				}
 			}
-			return scores;
+			return scores.sort(function (a,b) {
+				return b.score - a.score;
+			});
 		};
 
 		function isValidScore(score) {

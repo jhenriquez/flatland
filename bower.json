@@ -13,11 +13,11 @@
   "exportsOverride": {
     "bootstrap": {
       "scripts/vendors": "dist/js/*.min.js",
-      "css/vendors": [
+      "css": [
         "dist/css/*.min*",
         "dist/css/*.min*"
       ],
-      "fonts/vendors": "dist/fonts/*"
+      "fonts": "dist/fonts/*"
     },
     "jquery": {
       "scripts/vendors": [

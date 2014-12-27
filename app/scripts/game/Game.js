@@ -2,6 +2,7 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 	function Game(opts) {
 		var state = {
 			pause: false,
+			over: false,
 			score: 0,
 			metrics: {
 				size: 10,
@@ -20,6 +21,8 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 		state.canvas.height = adjustedSize(opts.height);
 
 		var context = state.canvas.getContext('2d');
+		var onGameOverCallback;
+		var onScoreCallback;
 
 		function adjustedSize (messure) {
 			messure = messure || 0;
@@ -48,10 +51,6 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 			return newHead;
 		}
 
-		function within (n, s, e) {
-			return n >= s && n <= e;
-		}
-
 		function collides(h) {
 			return _.where(state.snake.body, {x: h.x, y: h.y}).length > 1 || 
 					(h.x < 0 || h.x > state.canvas.width) || (h.y < 0 || h.y > state.canvas.height);
@@ -61,7 +60,7 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 			return _.where(state.food, {x: h.x, y: h.y}).shift();
 		}
 
-		function generateRandomPieceOfFood() {
+		function generateRandomPieceOfFood(food) {
 			var x, y, all = _.union(state.food, state.snake.body);
 			do {
 				x = _.random(state.canvas.width-state.metrics.size);
@@ -70,7 +69,30 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 				y -= y % state.metrics.size;
 			} while(_.where(all, {x: x, y: y}).length > 0);
 
-			return new Block(x, y, state.metrics.size, context);
+			if (food) {
+				food.x = x;
+				food.y = y;
+				return food;
+			} else {
+				return new Block(x, y, state.metrics.size, context);
+			}
+		}
+
+		function score() {
+			state.score += 10;
+			storage.setScore(state.score);
+			if (onScoreCallback) { onScoreCallback(state.score); }
+		}
+
+		function gameOver() {
+			state.over = true;
+			var scores = storage.getHighScores();
+			var minScore = _.min(scores, function (hs) { return hs.score; }).score || 0;
+			var isHighScore = state.score > minScore;
+			if (isHighScore) {
+				storage.saveHighScore(storage.getCurrentPlayer(), state.score);
+			}
+			if (onGameOverCallback) { onGameOverCallback({ highScore: isHighScore }); }
 		}
 
 		function animate () {
@@ -80,7 +102,7 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 			state.snake.directionCache = state.snake.direction;
 
 			if (collides(head)) {
-				state.pause = true;
+				return gameOver();
 			}
 
 			var food = checkfood(head);
@@ -88,7 +110,8 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 			if (food) {
 				state.food = _.without(state.food, food);
 				state.food.push(generateRandomPieceOfFood().draw());
-				state.metrics.speed--;
+				state.metrics.speed -= 0.5;
+				score();
 			} else {
 				state.snake.body.shift().clear();
 			}
@@ -132,14 +155,16 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 		this.environmentChanged = function (newEnvironment) {
 			state.canvas.width = adjustedSize(newEnvironment.width);
 			state.canvas.height = adjustedSize(newEnvironment.height);
+
+			_.each(state.food, function (food) {
+				generateRandomPieceOfFood(food).draw();
+			});
 		};
 
 		this.start = function () {
 			state.snake.direction = 2;
-
-			_.times(5, function () {
-				state.food.push(generateRandomPieceOfFood().draw());
-			});
+			storage.setScore(0);
+			onScoreCallback(0);
 
 			state.snake.body = Array.apply(null, new Array(3)).map(function () {
 				return new Block(0,0,state.metrics.size, context);
@@ -150,7 +175,23 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 
 			state.snake.body.reverse();
 
+			_.times(5, function () {
+				state.food.push(generateRandomPieceOfFood().draw());
+			});
+
 			requestAnimationFrame(animate);
+		};
+
+		this.onScore = function (f) {
+			if (f && typeof f === 'function') {
+				onScoreCallback = f;
+			}
+		};
+
+		this.onGameOver = function (f) {
+			if (f && typeof f === 'function') {
+				onGameOverCallback = f;
+			}
 		};
 	}
 
