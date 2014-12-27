@@ -8,10 +8,12 @@ define(function () {
 
 	Block.prototype.clear = function () {
 		this.context.clearRect(this.x,this.y,this.size,this.size);
+		return this;
 	};
 
 	Block.prototype.draw = function () {
 		this.context.fillRect(this.x,this.y,this.size,this.size);
+		return this;
 	};
 
 	Block.prototype = Object.create(Block.prototype);

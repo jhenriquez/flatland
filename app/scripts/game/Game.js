@@ -58,20 +58,16 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 		}
 
 		function checkfood(h) {
-			return _.filter(state.food, function (f) {
-				return within(f.x, h.x, h.x + state.metrics.size);
-			});
+			return _.where(state.food, {x: h.x, y: h.y}).shift();
 		}
 
 		function generateRandomPieceOfFood() {
-			var x;
-			var y;
-			var all = _.union(state.food, state.snake.body);
+			var x, y, all = _.union(state.food, state.snake.body);
 			do {
-				x = _.random(state.canvas.width);
-				y = _.random(state.canvas.height);
-				x += x % state.metrics.size;
-				y += y % state.metrics.size;
+				x = _.random(state.canvas.width-state.metrics.size);
+				y = _.random(state.canvas.height-state.metrics.size);
+				x -= x % state.metrics.size;
+				y -= y % state.metrics.size;
 			} while(_.where(all, {x: x, y: y}).length > 0);
 
 			return new Block(x, y, state.metrics.size, context);
@@ -87,23 +83,15 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 				state.pause = true;
 			}
 
-			state.snake.body.shift().clear();
+			var food = checkfood(head);
 
-			/*
-
-			var foods = checkfood(head);
-
-			if (foods.length > 0) {
-				_.each(foods, function (f) {
-					state.food = _.without(state.food, f);
-					state.food.push(generateRandomPieceOfFood());
-					_.last(state.food).draw();
-				});
+			if (food) {
+				state.food = _.without(state.food, food);
+				state.food.push(generateRandomPieceOfFood().draw());
+				state.metrics.speed--;
 			} else {
 				state.snake.body.shift().clear();
 			}
-
-			*/
 
 			setTimeout(function () { 
 				if (state.pause) {
@@ -111,7 +99,7 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 				} else {
 					requestAnimationFrame(animate);
 				}
-			}, state.metrics.speed * 30);
+			}, state.metrics.speed * 15);
 		}
 
 		this.getCanvas = function () {
@@ -148,6 +136,10 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 
 		this.start = function () {
 			state.snake.direction = 2;
+
+			_.times(5, function () {
+				state.food.push(generateRandomPieceOfFood().draw());
+			});
 
 			state.snake.body = Array.apply(null, new Array(3)).map(function () {
 				return new Block(0,0,state.metrics.size, context);
