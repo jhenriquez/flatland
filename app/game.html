@@ -3,6 +3,7 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="css/game-default.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
 	<body>
 
@@ -10,7 +11,19 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-body">
-						
+						<div class="row">
+							<div class="col-md-4 col-md-offset-4">
+								<p><span id="GameOver" class="text-center">Game Over!</span></p>
+								<p><span id="HighScore"></span></p>
+								<div class="centered">
+									<button data-dismiss="modal"
+											id="playAgain"
+											class="btn btn-primary text-center">
+										Play Again?
+									</button>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -30,16 +43,16 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-3">
+			<div id="left" class="col-sm-1 col-sm-offset-4">
 				<i class="glyphicon glyphicon-arrow-left"></i>
 			</div>
-			<div class="col-md-3">
+			<div id="right" class="col-sm-1">
 				<i class="glyphicon glyphicon-arrow-right"></i>
 			</div>
-			<div class="col-md-3">
+			<div id="up" class="col-sm-1">
 				<i class="glyphicon glyphicon-arrow-up"></i>
 			</div>
-			<div class="col-md-3">
+			<div id="down" class="col-sm-1">
 				<i class="glyphicon glyphicon-arrow-down"></i>
 			</div>
 		</div>

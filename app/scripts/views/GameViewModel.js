@@ -22,6 +22,22 @@ requirejs(['../rjsConfig',], function () {
 			game.setDirection(e.which-37);
 		});
 
+		$('#left').click(function (e) {
+			game.setDirection(0);
+		});
+
+		$('#right').click(function (e) {
+			game.setDirection(2);
+		});
+
+		$('#up').click(function (e) {
+			game.setDirection(1);
+		});
+
+		$('#down').click(function (e) {
+			game.setDirection(3);
+		});
+
 		initializeCanvasContainer();
 		updateStats();
 
@@ -31,7 +47,16 @@ requirejs(['../rjsConfig',], function () {
 			height: $('#canvas-container').height()
 		});
 
-		game.onGameOver(function () {
+		game.onGameOver(function (stats) {
+			var highScore;
+			if (stats.highScore) {
+				highScore = "You scored: " + $('#score').html() + "!";
+			} else {
+				highScore = '';
+			}
+
+			$('#HighScore').html(highScore);
+
 			$('.modal').modal({
 				backdrop: 'static',
 				keyboard: false
@@ -40,6 +65,11 @@ requirejs(['../rjsConfig',], function () {
 
 		game.onScore(function (score) {
 			$('#score').html(score);
+		});
+
+		$('#playAgain').click(function (e) {
+			updateStats();
+			game.start();
 		});
 
 		game.start();

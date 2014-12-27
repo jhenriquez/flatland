@@ -1,28 +1,34 @@
 define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 	function Game(opts) {
-		var state = {
-			pause: false,
-			over: false,
-			score: 0,
-			metrics: {
-				size: 10,
-				speed: 10
-			},
-			food: [],
-			snake: {
-				body: [],
-				direction: 0,
-				directionCache: 0
-			}
-		};
-
-		state.canvas = opts.canvas;
-		state.canvas.width = adjustedSize(opts.width);
-		state.canvas.height = adjustedSize(opts.height);
-
-		var context = state.canvas.getContext('2d');
+		var state;
+		var context;
 		var onGameOverCallback;
 		var onScoreCallback;
+
+		function setInitialState() {
+			state = {
+				pause: false,
+				over: false,
+				score: 0,
+				metrics: {
+					size: 10,
+					speed: 10
+				},
+				food: [],
+				snake: {
+					body: [],
+					direction: 0,
+					directionCache: 0
+				}
+			};
+
+			state.canvas = opts.canvas;
+			state.canvas.width = adjustedSize(opts.width);
+			state.canvas.height = adjustedSize(opts.height);
+			context = state.canvas.getContext('2d');
+		}
+
+		setInitialState();
 
 		function adjustedSize (messure) {
 			messure = messure || 0;
@@ -162,6 +168,7 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 		};
 
 		this.start = function () {
+			setInitialState();
 			state.snake.direction = 2;
 			storage.setScore(0);
 			onScoreCallback(0);
