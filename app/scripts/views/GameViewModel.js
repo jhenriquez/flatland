@@ -9,6 +9,11 @@ requirejs(['../rjsConfig',], function () {
 			$('#score').html(gameMaster.getScore());
 		}
 
+		function resetGame() {
+			updateStats();
+			game.start();
+		}
+
 		$(window).resize(initializeCanvasContainer);
 
 		$(window).resize(function () {
@@ -24,6 +29,10 @@ requirejs(['../rjsConfig',], function () {
 			}
 
 			game.setDirection(e.which-37);
+		});
+
+		$('canvas').click(function (e) {
+			game.restart();
 		});
 
 		$('#left').click(function (e) {
@@ -72,8 +81,7 @@ requirejs(['../rjsConfig',], function () {
 		});
 
 		$('#playAgain').click(function (e) {
-			updateStats();
-			game.start();
+			resetGame();
 		});
 
 		game.start();

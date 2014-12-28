@@ -4,8 +4,15 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 		var context;
 		var onGameOverCallback;
 		var onScoreCallback;
+		var animationFrame;
+		var animationFrames = [];
 
 		function setInitialState() {
+			if (animationFrame) {
+				animationFrames = animationFrames.splice(animationFrames.indexOf(animationFrame),1);
+				cancelAnimationFrame(animationFrame);
+				animationFrame = undefined;
+			}
 			state = {
 				pause: false,
 				over: false,
@@ -90,7 +97,7 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 			if (onScoreCallback) { onScoreCallback(state.score); }
 		}
 
-		function gameOver() {
+		function gameOver(notify) {
 			state.over = true;
 			var scores = storage.getHighScores();
 			var minScore = _.min(scores, function (hs) { return hs.score; }).score || 0;
@@ -98,7 +105,7 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 			if (isHighScore) {
 				storage.saveHighScore(storage.getCurrentPlayer(), state.score);
 			}
-			if (onGameOverCallback) { onGameOverCallback({ highScore: isHighScore }); }
+			if (onGameOverCallback && notify) { onGameOverCallback({ highScore: isHighScore }); }
 		}
 
 		function animate () {
@@ -109,7 +116,7 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 				state.snake.directionCache = state.snake.direction;
 
 				if (collides(head)) {
-					return gameOver();
+					return gameOver(true);
 				}
 
 				var food = checkfood(head);
@@ -122,10 +129,20 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 				} else {
 					state.snake.body.shift().clear();
 				}
+
+			} else {
+				_.each(state.snake.body, function (b) {
+					b.draw();
+					setTimeout(function () {
+						b.clear();
+					}, 200);
+				});
 			}
 
-			setTimeout(function () { 
-				requestAnimationFrame(animate);
+			setTimeout(function () {
+				if (!state.over) {
+					animationFrame = requestAnimationFrame(animate);
+				}
 			}, state.metrics.speed * 15);
 		}
 
@@ -185,8 +202,18 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 				state.food.push(generateRandomPieceOfFood().draw());
 			});
 
-			requestAnimationFrame(animate);
+			if (!animationFrame) {
+				animationFrame = requestAnimationFrame(animate);
+			}
 		};
+
+		this.restart = function () {
+			var self = this;
+			gameOver(false);
+			setTimeout(function () {
+				self.start();
+			}, 1500);
+		}
 
 		this.onScore = function (f) {
 			if (f && typeof f === 'function') {
