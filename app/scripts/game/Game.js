@@ -141,7 +141,8 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 
 		this.setDirection = function (direction) {
 			var opposedDirection = { 0:2, 1:3, 2:0, 3:1 };
-			if (/[0123]/.test(direction) && direction != opposedDirection[state.snake.directionCache]) {
+			direction = Math.abs(direction);
+			if (/^[0123]$/.test(direction) && direction != opposedDirection[state.snake.directionCache]) {
 				state.snake.direction = direction;
 			}
 		};
