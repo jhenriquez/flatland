@@ -213,7 +213,7 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 			setTimeout(function () {
 				self.start();
 			}, 1500);
-		}
+		};
 
 		this.onScore = function (f) {
 			if (f && typeof f === 'function') {
