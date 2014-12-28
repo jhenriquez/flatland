@@ -19,6 +19,10 @@ requirejs(['../rjsConfig',], function () {
 		});
 
 		$(window).keydown(function (e) {
+			if (e.which === 32) {
+				game.pauseToggle();
+			}
+
 			game.setDirection(e.which-37);
 		});
 

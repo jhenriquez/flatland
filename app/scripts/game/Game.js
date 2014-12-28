@@ -102,32 +102,30 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 		}
 
 		function animate () {
-			var head = createHead();
-			state.snake.body.push(head);
-			head.draw();
-			state.snake.directionCache = state.snake.direction;
+			if (!state.pause) {
+				var head = createHead();
+				state.snake.body.push(head);
+				head.draw();
+				state.snake.directionCache = state.snake.direction;
 
-			if (collides(head)) {
-				return gameOver();
-			}
+				if (collides(head)) {
+					return gameOver();
+				}
 
-			var food = checkfood(head);
+				var food = checkfood(head);
 
-			if (food) {
-				state.food = _.without(state.food, food);
-				state.food.push(generateRandomPieceOfFood().draw());
-				state.metrics.speed -= 0.5;
-				score();
-			} else {
-				state.snake.body.shift().clear();
+				if (food) {
+					state.food = _.without(state.food, food);
+					state.food.push(generateRandomPieceOfFood().draw());
+					state.metrics.speed -= 0.5;
+					score();
+				} else {
+					state.snake.body.shift().clear();
+				}
 			}
 
 			setTimeout(function () { 
-				if (state.pause) {
-					// Handle Pause
-				} else {
-					requestAnimationFrame(animate);
-				}
+				requestAnimationFrame(animate);
 			}, state.metrics.speed * 15);
 		}
 
