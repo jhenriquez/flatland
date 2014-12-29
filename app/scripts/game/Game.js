@@ -17,7 +17,7 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 				score: 0,
 				metrics: {
 					size: 10,
-					speed: 300
+					speed: 200
 				},
 				food: [],
 				snake: {
