@@ -130,11 +130,14 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 
 			} else {
 				_.each(state.snake.body, function (b) {
-					b.draw();
-					setTimeout(function () {
-						b.clear();
-					}, 200);
+					b.clear();
 				});
+
+				setTimeout(function () {
+					_.each(state.snake.body, function (b) {
+						b.draw();
+					});
+				}, 500);
 			}
 
 			setTimeout(function () {
