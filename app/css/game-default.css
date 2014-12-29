@@ -13,6 +13,7 @@ div span {
 
 canvas {
 	border: 1px dotted black;
+	margin: auto;
 }
 
 i.glyphicon {
@@ -26,4 +27,14 @@ i.glyphicon {
 
 h3 {
 	text-align: center;
+}
+
+#stats-container {
+	margin-top: 10px;
+}
+
+#buttons-container {
+	margin-top: 10px;
+	border: 1px solid black;
+	padding: 10px;
 }
