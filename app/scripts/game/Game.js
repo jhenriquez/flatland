@@ -5,11 +5,9 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 		var onGameOverCallback;
 		var onScoreCallback;
 		var animationFrame;
-		var animationFrames = [];
 
 		function setInitialState() {
 			if (animationFrame) {
-				animationFrames = animationFrames.splice(animationFrames.indexOf(animationFrame),1);
 				cancelAnimationFrame(animationFrame);
 				animationFrame = undefined;
 			}
@@ -19,7 +17,7 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 				score: 0,
 				metrics: {
 					size: 10,
-					speed: 10
+					speed: 300
 				},
 				food: [],
 				snake: {
@@ -124,7 +122,7 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 				if (food) {
 					state.food = _.without(state.food, food);
 					state.food.push(generateRandomPieceOfFood().draw());
-					state.metrics.speed -= 0.5;
+					state.metrics.speed -= state.metrics.speed > 150 ? 5 : 0;
 					score();
 				} else {
 					state.snake.body.shift().clear();
@@ -143,7 +141,7 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 				if (!state.over) {
 					animationFrame = requestAnimationFrame(animate);
 				}
-			}, state.metrics.speed * 15);
+			}, state.metrics.speed);
 		}
 
 		this.getCanvas = function () {
@@ -177,6 +175,8 @@ define(['game/GameStorage', 'game/Block'], function (storage, Block) {
 		this.environmentChanged = function (newEnvironment) {
 			state.canvas.width = adjustedSize(newEnvironment.width);
 			state.canvas.height = adjustedSize(newEnvironment.height);
+			opts.width = newEnvironment.width;
+			opts.height = newEnvironment.height;
 
 			_.each(state.food, function (food) {
 				generateRandomPieceOfFood(food).draw();
