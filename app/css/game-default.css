@@ -2,12 +2,12 @@
 	text-align: center;
 }
 
-ul {
+div {
 	list-style-type: none;
 	font-weight: bold;
 }
 
-li span {
+div span {
 	font-weight: normal;
 }
 
@@ -22,4 +22,8 @@ i.glyphicon {
 #GameOver {
 	font-weight: bold;
 	font-size: 25px;
+}
+
+h3 {
+	text-align: center;
 }
