@@ -38,7 +38,7 @@ describe('Game', function () {
 		});
 
 		it('should provide the default speed when getSpeed is called.', function () {
-			game.getSpeed().should.eql(10);
+			game.getSpeed().should.eql(200);
 		});
 
 		it('should indicate if the game is paused.', function () {
